@@ -1,77 +1,72 @@
 // your code goes here!
-var checkingDepositButton = document.querySelector("#checkingDepositButton")
-var checkingWithdrawalButton = document.querySelector("#checkingWithdrawalButton")
-var savingsDepositButton = document.querySelector("#savingsDepositButton")
-var savingsWithdrawalButton = document.querySelector("#savingsWithdrawalButton")
-var checkingsBalance = 0
-var savingsBalance = 0
+$("document").ready(function(){
+  console.log("working");
+
+var checkingBalance = 0;
+var checkingInput = $("#checkingAmount");
+var checkingDepositButton = $("#checkingDepositButton");
+var checkingWithdrawButton = $("#checkingWithdrawalButton");
+var checkingBalanceDiv = $("#checkingBalanceDiv")
+
+var savingsBalance = 0;
+var savingsInput = $("#savingsAmount");
+var savingsDepositButton = $("#savingsDepositButton");
+var savingsWithdrawButton = $("#savingsWithdrawalButton");
+var savingsBalanceDiv = $("#savingsBalanceDiv");
 
 
-var bothBalances = function () {
- checkingsBalance + savingsBalance
- return checkingsBalance + savingsBalance
-};
 
-var inputCheckings = function() {
- var amount = parseInt( document.querySelector('#checkingAmount').value );
- checkingBalanceDiv = document.querySelector('#checkingBalanceDiv');
- document.querySelector('#checkingAmount').value = '';
+//add an event listener to the deposit button for a click
+//when it gets clicked console.log ("I was clicked")
+//get value within textbox and console.log
 
- checkingsBalance = amount + checkingsBalance
- checkingBalanceDiv.innerHTML = "$" + checkingsBalance
+function depositChecking(){
+  console.log("I was clicked");
+  var checkingAmount = parseInt(checkingInput.val());
+  console.log(checkingAmount);
+  //update total amount in checking based on checkingAmount
+  //console.log updated total
 
-};
+  checkingBalance = checkingBalance + checkingAmount;
+  console.log(checkingBalance)
+  checkingBalanceDiv.html("$" + checkingBalance);
+}
 
-var outputCheckings = function() {
- var amount = parseInt( document.querySelector('#checkingAmount').value );
- checkingBalanceDiv = document.querySelector('#checkingBalanceDiv');
- document.querySelector('#checkingAmount').value = '';
- var remainder = checkingsBalance - amount
+function withdrawChecking(){
+  var checkingAmount = parseInt(checkingInput.val());
+  checkingBalance = checkingBalance - checkingAmount;
+  checkingBalanceDiv.html("$" + checkingBalance);
 
- if (remainder >= 0) {
-   checkingsBalance = checkingsBalance - amount
-   checkingBalanceDiv.innerHTML = "$" + checkingsBalance
- }
- else {
-   if (bothBalances() - amount >= 0) {
+  //checkingbalance cannot go to zero
+  //when zero, withdraw from savings
+  //amount greater < or > than balance
+  //if/else condition
+  // if (checkingBalance <= 0){
+  //   var checkingAmount = parseInt(checkingInput.val());
+  //
+  //   function overdraftProtection(){
+  //     var savingsAmount = parseInt(savingsInput.val());
+  //     savingsBalance = savingsBalance + savingsAmount;
+  //     var overdraftAmount = savingsBalance - checkingAmount;
+  //   }
+  //
+  // }
+}
+function depositSavings(){
+var savingsAmount = parseInt(savingsInput.val());
+savingsBalance = savingsBalance + savingsAmount;
+savingsBalanceDiv.html("$" + savingsBalance);
+}
 
-     savingsBalance = savingsBalance + remainder
-     checkingsBalance = 0
-     checkingBalanceDiv.innerHTML = "$" + checkingsBalance
-     savingsBalanceDiv.innerHTML = "$" + savingsBalance
-   }
-   else {
-     checkingBalanceDiv.innerHTML = "$" + checkingsBalance
-   }
- }
+function withdrawSavings(){
+  var savingsAmount = parseInt(savingsInput.val());
+  savingsBalance = savingsBalance - savingsAmount;
+  savingsBalanceDiv.html("$" + savingsBalance);
+}
 
-var inputSavings = function() {
- amount = parseInt( document.querySelector('#savingsAmount').value );
- checkingBalanceDiv = document.querySelector('#savingsBalanceDiv');
- document.querySelector('#savingsAmount').value = '';
+checkingDepositButton.on("click", depositChecking);
+checkingWithdrawButton.on("click", withdrawChecking);
+savingsDepositButton.on("click", depositSavings);
+savingsWithdrawButton.on("click", withdrawSavings);
 
- savingsBalance = amount + savingsBalance
- savingsBalanceDiv.innerHTML = "$" + savingsBalance
-};
-
-var outputSavings = function() {
- amount = parseInt( document.querySelector('#savingsAmount').value );
- checkingBalanceDiv = document.querySelector('#savingsBalanceDiv');
- document.querySelector('#savingsAmount').value = '';
-
-
- if (savingsBalance - amount < 0) {
-   savingsBalanceDiv.innerHTML = "$" + savingsBalance
- }
- else if (checkingsBalance > 0) {
-   savingsBalance = savingsBalance - amount
-   savingsBalanceDiv.innerHTML = "$" + savingsBalance
- }
-
- };
-
-
-checkingDepositButton.addEventListener( "click", inputCheckings );
-checkingWithdrawalButton.addEventListener("click", outputCheckings );
-savingsDepositButton.addEventListener("click", inputSavings );
-savingsWithdrawalButton.addEventListener("click", outputSavings );
+})
